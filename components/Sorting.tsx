@@ -46,7 +46,7 @@ export default function Sorting() {
     // Function that will fetch Sort Frames from API and set in state
     const fetchSortedFrames = () => {
       setIsSorting(true);
-      fetch(`http://192.168.1.250:8080/sort?algorithm=${algorithm}`, {
+      fetch(`${process.env.EXPO_PUBLIC_BASE_API_URL}/sort?algorithm=${algorithm}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,9 +86,9 @@ export default function Sorting() {
         return 'red';
       } else if (currentIndex == highlights["pivot"]) {
         return 'yellow';
-      } else if (currentIndex == highlights["i"]) {
+      } else if (currentIndex == highlights["left"]) {
         return 'green';
-      } else if (currentIndex == highlights["j"]) {
+      } else if (currentIndex == highlights["right"]) {
         return 'orange';
       } else {
         return defaultColor;
