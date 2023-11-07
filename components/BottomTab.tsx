@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Foo from './Foo';
+import Home from './Home';
 import Searching from './Searching';
 import Sorting from './Sorting';
 
@@ -42,9 +42,8 @@ export default function BottomTab() {
     >
       <Tab.Screen
         name="Home"
-        component={Foo}
+        component={Home}
         options={{
-          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),

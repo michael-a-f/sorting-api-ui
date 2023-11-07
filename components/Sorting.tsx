@@ -1,9 +1,7 @@
-import { useTheme, Chip, FAB, Text } from 'react-native-paper';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useTheme, FAB } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Chips from './Chips';
-import SortContainer from './SortContainer';
-import Controls from './Controls';
 import SortFrame from '../ts/SortFrame'
 
 export default function Sorting() {
@@ -33,13 +31,13 @@ export default function Sorting() {
     }
     
     // State needed to send a request
-    const [listLength, setListLength] = useState(30);
+    const [listLength, setListLength] = useState(40);
     const [list, setList] = useState(() => generateRandomList(listLength));
     const [algorithm, setAlgorithm] = useState("bubble");
 
     // State for metadata about screen that components need to know
     const [framesPerSecond, setFramesPerSecond] = useState(24);
-    const [isSorting, setIsSorting] = useState(true);
+    const [isSorting, setIsSorting] = useState(false);
     const [currentFrame, setCurrentFrame] = useState<SortFrame>(() => new SortFrame(list, {}));
 
     // State for storing API response for current Sort
@@ -47,7 +45,8 @@ export default function Sorting() {
 
     // Function that will fetch Sort Frames from API and set in state
     const fetchSortedFrames = () => {
-      fetch(`http://192.168.68.147:8080/sort?algorithm=${algorithm}`, {
+      setIsSorting(true);
+      fetch(`http://192.168.1.250:8080/sort?algorithm=${algorithm}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,8 +55,12 @@ export default function Sorting() {
       }).then(response => response.json())
         .then(sortedFrames => {
           setFrames(sortedFrames)
+          setIsSorting(false);
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          setIsSorting(false);
+          console.error(error);
+        });
     }
 
     // Hook that will fire when the frames state is updated
@@ -78,33 +81,34 @@ export default function Sorting() {
       }
     }
 
+    const getBarColor = (highlights: Record<string, number>, currentIndex: number, defaultColor: string) => {
+      if (currentIndex == highlights["current"]) {
+        return 'red';
+      } else if (currentIndex == highlights["pivot"]) {
+        return 'yellow';
+      } else if (currentIndex == highlights["i"]) {
+        return 'green';
+      } else if (currentIndex == highlights["j"]) {
+        return 'orange';
+      } else {
+        return defaultColor;
+      }
+    }
+
     
   return (
     <View style={styles.container}>
-
       <Chips algorithm={algorithm} setAlgorithm={setAlgorithm} />
-
       <View style={styles.sortContainer}>
         {currentFrame.list.map((val, idx) => {
-          let barColor;
-          const isSorted = idx == currentFrame.list.length - 1;
-          const isCurrent = idx == currentFrame.highlights["current"];
-          if (isSorted) {
-            barColor = '#32cd32';
-          } else if (isCurrent) {
-            barColor = 'red';
-          } else {
-            barColor = theme.colors.primary;
-          }
-           return <View key={idx} style={{borderWidth: 0.5, height: `${val}%`, flex: 1, backgroundColor: barColor}}/>
+          const barColor = getBarColor(currentFrame.highlights, idx, theme.colors.primary)
+          return <View key={idx} style={{borderWidth: 0.5, height: `${val}%`, flex: 1, backgroundColor: barColor}}/>
         })}
       </View>
-
       <View style={styles.fabContainer}>
-        <FAB icon="cog" onPress={() => console.log('Pressed')}/>
+        <FAB icon="cog" />
         <FAB icon="play" onPress={() => fetchSortedFrames()}/>
-    </View>
-    
+      </View>
     </View>
   );
 }
