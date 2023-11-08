@@ -38,6 +38,7 @@ export default function Sorting() {
     // State for metadata about screen that components need to know
     const [framesPerSecond, setFramesPerSecond] = useState(24);
     const [isSorting, setIsSorting] = useState(false);
+    const [isSorted, setIsSorted] = useState(false);
     const [currentFrame, setCurrentFrame] = useState<SortFrame>(() => new SortFrame(list, {}));
 
     // State for storing API response for current Sort
@@ -45,23 +46,24 @@ export default function Sorting() {
 
     // Function that will fetch Sort Frames from API and set in state
     const fetchSortedFrames = () => {
-      setIsSorting(true);
-      fetch(`${process.env.EXPO_PUBLIC_BASE_API_URL}/sort?algorithm=${algorithm}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(list),
-      }).then(response => response.json())
-        .then(sortedFrames => {
-          setFrames(sortedFrames)
-          setIsSorting(false);
-        })
-        .catch(error => {
-          setIsSorting(false);
-          console.error(error);
-        });
-    }
+      if (!isSorted && !isSorting) {
+        setIsSorting(true);
+        fetch(`${process.env.EXPO_PUBLIC_BASE_API_URL}/sort?algorithm=${algorithm}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(list),
+        }).then(response => response.json())
+          .then(sortedFrames => {
+            setFrames(sortedFrames)
+          })
+          .catch(error => {
+            setIsSorting(false);
+            console.error(error);
+          });
+        }
+      }
 
     // Hook that will fire when the frames state is updated
     useEffect(() => {
@@ -76,13 +78,16 @@ export default function Sorting() {
           setCurrentFrame(frames[i]);
           if (i == frames.length - 1) {
             setIsSorting(false);
+            setIsSorted(true);
           }
         }, (1000 / framesPerSecond) * i);
       }
     }
 
     const getBarColor = (highlights: Record<string, number>, currentIndex: number, defaultColor: string) => {
-      if (currentIndex == highlights["current"]) {
+      if (isSorted) {
+        return "green";
+      } else if (currentIndex == highlights["current"]) {
         return 'red';
       } else if (currentIndex == highlights["pivot"]) {
         return 'yellow';
