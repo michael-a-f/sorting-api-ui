@@ -7,27 +7,27 @@ import SortFrame from '../ts/SortFrame'
 export default function Sorting() {
     const theme = useTheme()
     const styles = StyleSheet.create({
-        container: {
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: theme.colors.background,
-        },
-        fabContainer: {
-          margin: 10,
-          padding: 10,
-          flexDirection: 'row',
-          justifyContent: 'flex-end'
+      container: {
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: theme.colors.background,
+      },
+      fabContainer: {
+        margin: 10,
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
       },
       sortContainer: {
         backgroundColor: theme.colors.surfaceDisabled,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
-    },
+      },
     })
 
     function generateRandomList(length: any) {
-        return Array.from({length: length}, () => Math.floor(Math.random() * 100));
+        return Array.from({length: length}, () => Math.floor(Math.random() * 100) + 1);
     }
     
     // State needed to send a request
@@ -36,7 +36,7 @@ export default function Sorting() {
     const [algorithm, setAlgorithm] = useState("bubble");
 
     // State for metadata about screen that components need to know
-    const [framesPerSecond, setFramesPerSecond] = useState(24);
+    const [framesPerSecond, setFramesPerSecond] = useState(60);
     const [isSorting, setIsSorting] = useState(false);
     const [isSorted, setIsSorted] = useState(false);
     const [currentFrame, setCurrentFrame] = useState<SortFrame>(() => new SortFrame(list, {}));
@@ -86,7 +86,7 @@ export default function Sorting() {
 
     const getBarColor = (highlights: Record<string, number>, currentIndex: number, defaultColor: string) => {
       if (isSorted) {
-        return "green";
+        return theme.colors.inversePrimary;
       } else if (currentIndex == highlights["current"]) {
         return 'red';
       } else if (currentIndex == highlights["pivot"]) {
@@ -112,7 +112,12 @@ export default function Sorting() {
       </View>
       <View style={styles.fabContainer}>
         <FAB icon="cog" />
-        <FAB icon="play" onPress={() => fetchSortedFrames()}/>
+        <FAB icon="shuffle" onPress={() => {
+            setList(generateRandomList(listLength));
+            setCurrentFrame(new SortFrame(list, {}));
+            setIsSorted(false);
+          }}/>
+        <FAB icon={isSorting ? "pause" : "play"} onPress={() => fetchSortedFrames()}/>
       </View>
     </View>
   );
