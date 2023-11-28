@@ -36,7 +36,7 @@ export default function Sorting() {
     const [algorithm, setAlgorithm] = useState("bubble");
 
     // State for metadata about screen that components need to know
-    const [framesPerSecond, setFramesPerSecond] = useState(60);
+    const [framesPerSecond, setFramesPerSecond] = useState(24);
     const [isSorting, setIsSorting] = useState(false);
     const [isSorted, setIsSorted] = useState(false);
     const [currentFrame, setCurrentFrame] = useState<SortFrame>(() => new SortFrame(list, {}));

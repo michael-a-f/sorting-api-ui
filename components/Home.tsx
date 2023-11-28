@@ -20,29 +20,29 @@ export default function Home() {
       backgroundColor: theme.colors.background,
     },
     logo: {
-      backgroundColor: theme.colors.backdrop,
-      marginTop: 30,
-      paddingVertical: 10,
+      backgroundColor: theme.colors.background,
+      marginTop: 0,
+      paddingVertical: 30,
       paddingHorizontal: 30,
-      borderWidth: 2,
+      borderWidth: 0,
       borderRadius: 40,
       borderColor: theme.colors.primaryContainer,
     },
     logoText: {
       color: theme.colors.onBackground,
       fontFamily: "Bungee_400Regular",
-      textShadowColor: "red",
+      textShadowColor: theme.colors.primaryContainer,
       textShadowRadius: 10,
       textShadowOffset: {
         width: -1,
         height: 1,
       },
-      fontSize: 48,
+      fontSize: 44,
     },
     btn: {
       backgroundColor: theme.colors.backdrop,
-      width: 250,
-      borderRadius: 40,
+      width: 300,
+      borderRadius: 10,
       borderWidth: 2,
       borderColor: theme.colors.primaryContainer,
       fontFamily: "Bungee_400Regular",
@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
-        <Text style={styles.logoText}>Search 'n Sort</Text>
+        <Text style={styles.logoText}>Sorting Visualizer</Text>
       </View>
 
       <View style={styles.container}>

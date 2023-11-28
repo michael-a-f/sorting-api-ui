@@ -16,7 +16,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <PaperProvider theme={DefaultTheme}>
-        <SafeAreaView style={{flex: 1}}>
           <Tab.Navigator
             initialRouteName="Feed"
             screenOptions={{
@@ -24,15 +23,17 @@ export default function App() {
                 backgroundColor: DefaultTheme.colors.surface,
                 elevation: 0,
               },
+              headerShadowVisible: false,
               headerTitleStyle: {
-                color: DefaultTheme.colors.onSurface,
+                color: DefaultTheme.colors.background,
               },
               tabBarActiveTintColor: DefaultTheme.colors.onSurface,
               tabBarInactiveTintColor: DefaultTheme.colors.onSurfaceDisabled,
               tabBarStyle: {
                 backgroundColor: DefaultTheme.colors.surface,
                 elevation: 0,
-                borderColor: DefaultTheme.colors.onSurfaceDisabled
+                borderColor: DefaultTheme.colors.onSurfaceDisabled,
+                borderTopWidth: 0
               }
             }}
             >
@@ -49,7 +50,6 @@ export default function App() {
               name="Sorting"
               component={Sorting}
               options={{
-                tabBarLabel: 'Sorting',
                 tabBarIcon: ({ color, size }) => (
                   <MaterialCommunityIcons name="bell" color={color} size={size} />
                 ),
@@ -66,10 +66,8 @@ export default function App() {
               }}
             />
           </Tab.Navigator>
-        </SafeAreaView>
       </PaperProvider>
     </NavigationContainer>
-  
   );
 }
 

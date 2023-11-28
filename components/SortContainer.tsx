@@ -11,8 +11,6 @@ export default function SortContainer({ frame } : {frame: SortFrame}) {
             flex: 1,
             flexDirection: 'row',
             alignItems: 'flex-end',
-            
-
         },
     })
     
