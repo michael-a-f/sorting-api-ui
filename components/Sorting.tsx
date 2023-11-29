@@ -19,7 +19,7 @@ export default function Sorting() {
         justifyContent: 'space-between'
       },
       sortContainer: {
-        backgroundColor: theme.colors.surfaceDisabled,
+        backgroundColor: theme.colors.background,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
@@ -100,7 +100,15 @@ export default function Sorting() {
       }
     }
 
-    
+    const setNewList = () => {
+      if (!isSorting) {
+      const newList = generateRandomList(listLength);
+      setList(newList);
+      setCurrentFrame(new SortFrame(newList, {}));
+      setIsSorted(false);
+      }
+    }
+
   return (
     <View style={styles.container}>
       <Chips algorithm={algorithm} setAlgorithm={setAlgorithm} />
@@ -111,13 +119,9 @@ export default function Sorting() {
         })}
       </View>
       <View style={styles.fabContainer}>
-        <FAB icon="cog" />
-        <FAB icon="shuffle" onPress={() => {
-            setList(generateRandomList(listLength));
-            setCurrentFrame(new SortFrame(list, {}));
-            setIsSorted(false);
-          }}/>
-        <FAB icon={isSorting ? "pause" : "play"} onPress={() => fetchSortedFrames()}/>
+        <FAB icon="cog" disabled={isSorting}/>
+        <FAB icon="shuffle" disabled={isSorting} onPress={setNewList}/>
+        <FAB icon={isSorting ? "pause" : "play"} disabled={isSorting} onPress={fetchSortedFrames}/>
       </View>
     </View>
   );

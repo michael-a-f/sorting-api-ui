@@ -18,7 +18,16 @@ export default function Chips({ algorithm, setAlgorithm } : {algorithm: string, 
         chip: {
             margin:5,
             height: 35,
+            borderColor: theme.colors.background,
+            borderWidth: 1,
         },
+        selectedChip: {
+            margin:5,
+            height: 35,
+            backgroundColor: theme.colors.primaryContainer,
+            borderColor: theme.colors.primary,
+            borderWidth: 1,
+        }
     })
     
 
@@ -27,25 +36,25 @@ export default function Chips({ algorithm, setAlgorithm } : {algorithm: string, 
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <Chip 
                     selected={algorithm == "bubble"}
-                    style={styles.chip}
+                    style={algorithm == "bubble" ? styles.selectedChip : styles.chip}
                     onPress={() => setAlgorithm("bubble")}>
                         Bubble Sort
                 </Chip>
                 <Chip 
                     selected={algorithm == "insertion"} 
-                    style={styles.chip} 
+                    style={algorithm == "insertion" ? styles.selectedChip : styles.chip}
                     onPress={() => setAlgorithm("insertion")}>
                         Insertion Sort
                 </Chip>
                 <Chip 
                     selected={algorithm == "merge"} 
-                    style={styles.chip} 
+                    style={algorithm == "merge" ? styles.selectedChip : styles.chip}
                     onPress={() => setAlgorithm("merge")}>
                         Merge Sort
                 </Chip>
                 <Chip 
                     selected={algorithm == "quick"}
-                    style={styles.chip}
+                    style={algorithm == "quick" ? styles.selectedChip : styles.chip}
                     onPress={() => setAlgorithm("quick")}>
                         Quick Sort
                 </Chip>
